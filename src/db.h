@@ -52,6 +52,18 @@ struct db_map
     db_record records[];
 };
 
+struct db_key_value_pair
+{
+    unsigned long long key_id;
+    void *value;
+    unsigned long long value_length;
+};
+
+struct db_row
+{
+    db_key_value_pair *pairs;
+};
+
 database *db_new(void);
 void db_free(database *db);
 

@@ -2,7 +2,7 @@ CC=clang
 WARNINGFLAGS=-Wall
 CFLAGS=-I. $(WARNINGFLAGS) -g -O0
 LDFLAGS=-dead_strip
-OBJECTS=main.o db.o storage.o util.o
+OBJECTS=main.o db.o btree.o storage.o util.o
 
 EXECUTABLE=ldb
 
