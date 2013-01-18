@@ -1,7 +1,7 @@
 CC=clang
 WARNINGFLAGS=-Wall
 CFLAGS=-I. $(WARNINGFLAGS) -g -O0
-LDFLAGS=-dead_strip
+LDFLAGS=
 OBJECTS=main.o db.o btree.o storage.o util.o
 
 EXECUTABLE=ldb

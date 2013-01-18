@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/file.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -56,7 +57,14 @@ bool db_open(database* restrict db)
         }
     }
 
-    const int records_file_descriptor = open(db_records_path, O_RDWR | O_CREAT | O_SHLOCK);
+    const int records_file_descriptor = 
+#ifdef O_SHLOCK
+	open(db_records_path, O_RDWR | O_CREAT | O_SHLOCK);	
+#else
+	open(db_records_path, O_RDWR | O_CREAT);
+	flock(records_file_descriptor, LOCK_SH);	
+#endif
+
     free(db_records_path);
     if (records_file_descriptor < 0)
     {
@@ -112,7 +120,14 @@ static bool db_init(database *restrict db, const char *restrict records_file_nam
     memcpy(map->magic_bytes, magic_bytes, strlen(magic_bytes));
     map->max_record_count = default_max_record_count;
 
-    const int file_descriptor = open(records_file_name, O_RDWR | O_CREAT | O_EXCL | O_EXLOCK);
+    const int file_descriptor =
+#ifdef O_EXLOCK
+        open(records_file_name, O_RDWR | O_CREAT | O_EXCL | O_EXLOCK);
+#else
+        open(records_file_name, O_RDWR | O_CREAT | O_EXCL);
+        flock(file_descriptor, LOCK_EX);
+#endif
+    
     free(db_records_path);
     if (file_descriptor < 0)
     {
