@@ -3,7 +3,6 @@
 
 #include <sys/types.h>
 
-char *copy_string(const char *restrict str);
 off_t get_file_size(const int file_descriptor);
 
 #ifndef _GNU_SOURCE

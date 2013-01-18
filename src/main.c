@@ -1,3 +1,4 @@
+#include <string.h>
 #include "db.h"
 #include "util.h"
 
@@ -15,7 +16,7 @@ int main(int argc, char *argv[])
 static int dbmain(int argc, char *argv[])
 {
     database *db = db_new();
-    db->db_path = copy_string("."); 
+    db->db_path = strdup("."); 
     db_open(db);
 
     db_close(db);
