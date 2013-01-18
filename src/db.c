@@ -46,6 +46,7 @@ bool db_open(database* restrict db)
         {
             if (!db_init(db, db_records_file_name))
             {
+                free(db_records_path);
                 return false;
             }
         }
@@ -132,6 +133,7 @@ static bool db_init(database *restrict db, const char *restrict records_file_nam
     if (file_descriptor < 0)
     {
         perror(program_invocation_short_name);
+        free(map);
         return false;
     }
     fchmod(file_descriptor, S_IRUSR | S_IWUSR);
@@ -139,6 +141,8 @@ static bool db_init(database *restrict db, const char *restrict records_file_nam
     write(file_descriptor, map, db_size);
     flock(file_descriptor, LOCK_UN);
     close(file_descriptor);
+    free(map);
+    
     return true;
 }
 
